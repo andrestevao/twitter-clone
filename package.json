@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "migrate": "node-pg-migrate -d DB_LINK up",
+    "migrate_down": "node-pg-migrate -d DB_LINK down",
     "new_migrate": "node-pg-migrate -d DB_LINK create"
   },
   "repository": {
