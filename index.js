@@ -3,7 +3,9 @@ const app = express();
 const bodyParser = require('body-parser');
 const port = 3000;
 const db = require('./db');
+const { redisClient } = require('./redis');
 const bcrypt = require('bcrypt');
+const uuid = require('node-uuid');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -67,7 +69,26 @@ app.post('/login', (req,res) => {
             return
         }
 
-        res.status(200).send('Correct password. Logged in');
+        
+        let end = new Date();
+        end.setDate(end.getDate() + 30);
+
+        let randomToken = uuid.v4();
+        let session = {
+            username: params.username,
+            sessionStart: new Date().toLocaleString(),
+            sessionEnd: end.toLocaleString()
+        }
+
+        redisClient.set(randomToken, JSON.stringify(session));
+        redisClient.expire(randomToken, 60*60*30); //30 days
+
+        let dataResponse = {
+            ok: true,
+            sessionToken: randomToken,
+            sessionData: session
+        }
+        res.status(200).send(JSON.stringify(dataResponse));
         return;
 
     })
@@ -77,6 +98,42 @@ app.post('/login', (req,res) => {
     })
     
 });
+
+app.post('/logout', (req, res) => {
+    let params = {
+        sessionToken: nullToString(req.body.sessionToken)
+    };
+
+    let missingParams = checkParams(params);
+    
+    if(missingParams.length > 0){
+        res.status(400).send('Parameters missing: '+paramsMissing.join(", "));
+        return;
+    }
+
+    redisClient.get(params.sessionToken, (err, value) => {
+        let session = JSON.parse(value);
+        if(!session){
+            res.status(401).send('Session does not exists!');
+            return
+        }
+
+        redisClient.del(params.sessionToken, (err, response) => {
+            if(response != 1){
+                res.status(500).send('Error while logging session out');
+                return;
+            }
+
+            if(err){
+                res.status(500).send('Error while logging session out: '+err);
+                return;
+            }
+
+            res.status(200).send('User '+session.username+' logged out succesfully!');
+            return;
+        });
+    });
+})
 
 const checkParams = (params) => {
     let paramsMissing = [];
