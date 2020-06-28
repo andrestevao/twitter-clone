@@ -1,4 +1,5 @@
 require('dotenv').config()
+const { promisify } = require("util");
 
 const redis = require("redis");
 const client = redis.createClient({
@@ -16,5 +17,9 @@ client.on('error', (err) => {
 });
 
 module.exports = {
-    redisClient: client
+    get: promisify(client.get).bind(client),
+    del: promisify(client.del).bind(client),
+    del: promisify(client.del).bind(client),
+    set: promisify(client.set).bind(client),
+    expire: promisify(client.expire).bind(client),
 }

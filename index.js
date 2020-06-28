@@ -3,7 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const port = 3000;
 const db = require('./db');
-const { redisClient } = require('./redis');
+const redisClient = require('./redis');
 const bcrypt = require('bcrypt');
 const uuid = require('node-uuid');
 
@@ -44,7 +44,7 @@ app.post('/register', (req,res) => {
             return;
         } 
         res.status(500).send('Error while creating user: '+error);
-    })
+    });
     
 });
 
@@ -76,6 +76,7 @@ app.post('/login', (req,res) => {
         let randomToken = uuid.v4();
         let session = {
             username: params.username,
+            id: user.id,
             sessionStart: new Date().toLocaleString(),
             sessionEnd: end.toLocaleString()
         }
@@ -133,7 +134,51 @@ app.post('/logout', (req, res) => {
             return;
         });
     });
-})
+});
+
+app.post('/tweet', (req, res) => {
+    let params = {
+        sessionToken: nullToString(req.body.sessionToken),
+        content: nullToString(req.body.content)
+    };
+
+    let missingParams = checkParams(params);
+    
+    if(missingParams.length > 0){
+        res.status(400).send('Parameters missing: '+paramsMissing.join(", "));
+        return;
+    }
+
+    redisClient.get(params.sessionToken)
+    .then((data)=> {
+        let session = JSON.parse(data);
+        if(!session){
+            res.status(401).send('Token not valid: "'+params.sessionToken+'". Please log in to get a new token.');
+            return;
+        }
+        
+        let query = 'INSERT INTO tweets(author, content) VALUES($1, $2)';
+        let queryParams = [session.id, params.content];
+        db.query(query, queryParams)
+        .then(() => {
+            let response = {
+                response: 'Tweet created successfully!',
+                tweetInfo: {
+                    username: session.username,
+                    content: params.content,
+                    date: new Date().toLocaleString()
+                }
+            }
+            res.status(201).send(response);
+        })
+        .catch(e => {
+            res.status(500).send('Error while creating tweet: '+e);
+        });
+
+    });  
+
+
+});
 
 const checkParams = (params) => {
     let paramsMissing = [];
