@@ -157,26 +157,29 @@ app.post('/tweet', (req, res) => {
             return;
         }
         
+        return session;
+    }).then((session) => {
         let query = 'INSERT INTO tweets(author, content) VALUES($1, $2)';
         let queryParams = [session.id, params.content];
-        db.query(query, queryParams)
-        .then(() => {
-            let response = {
-                response: 'Tweet created successfully!',
-                tweetInfo: {
-                    username: session.username,
-                    content: params.content,
-                    date: new Date().toLocaleString()
-                }
+        
+        return [db.query(query, queryParams), session]
+        
+    }).then((result) => {
+        
+        let response = {
+            response: 'Tweet created successfully!',
+            tweetInfo: {
+                username: result[1].username,
+                content: params.content,
+                date: new Date().toLocaleString()
             }
-            res.status(201).send(response);
-        })
-        .catch(e => {
-            res.status(500).send('Error while creating tweet: '+e);
-        });
+        }
 
-    });  
-
+        res.status(201).send(response);
+        
+    }).catch((e) => {
+        res.status(500).send('Error while creating tweet: '+e);
+    });
 
 });
 
