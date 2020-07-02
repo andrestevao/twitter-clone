@@ -8,6 +8,7 @@ Honestly, i would keep this private because i'm still learning but i figured it 
 ## :card_file_box: Project structure :open_file_folder:
 I am trying to follow the current structure:
 ![project structure](https://i2.wp.com/www.coreycleary.me/wp-content/uploads/2018/11/Express-REST-API-Struc.png?w=741&ssl=1)
+
 *(based off of [https://www.coreycleary.me/project-structure-for-an-express-rest-api-when-there-is-no-standard-way/](https://www.coreycleary.me/project-structure-for-an-express-rest-api-when-there-is-no-standard-way/) and some other cools articles i read about the subject)*
 The idea behind is:
 
@@ -21,7 +22,7 @@ The idea behind is:
 The context is separated like that by basically (you can see more on the article i linked above) separation of concerns and ease of testing/switching web framework (if ever needed), to make different parts of the app structure more modular and easy to manage later.
 
 ## :clipboard: Current status :wrench:
-. This is currently only the backend API, but i plan on turning this into a monorepo with both the front-end (that i plan on building on react) and back-end.
+This is currently only the backend API, but i plan on turning this into a monorepo with both the front-end (that i plan on building on react) and back-end.
 
 Any advice is welcome!
 
