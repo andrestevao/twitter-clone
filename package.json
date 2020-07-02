@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "migrate": "node-pg-migrate -d DB_LINK up",
+    "start": "node index.js",
+    "migrate": "node -r dotenv/config && node-pg-migrate -d DB_LINK up",
     "migrate_down": "node-pg-migrate -d DB_LINK down",
     "new_migrate": "node-pg-migrate -d DB_LINK create",
     "prettier": "prettier --write '**/*.js'"
@@ -29,7 +29,8 @@
     "node-postgres": "^0.6.2",
     "node-uuid": "^1.4.8",
     "pg": "^8.2.1",
-    "redis": "^3.0.2"
+    "redis": "^3.0.2",
+    "volleyball": "^1.5.1"
   },
   "devDependencies": {
     "eslint": "^7.2.0",
