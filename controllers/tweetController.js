@@ -1,7 +1,8 @@
 const redisService = require("../services/redisService");
+const tweetService = require("../services/tweetService");
 const utils = require("../utils");
 
-function tweet(req, res) {
+async function tweet(req, res) {
   let params = {
     sessionToken: utils.nullToString(req.body.sessionToken),
     content: utils.nullToString(req.body.content),
@@ -14,43 +15,29 @@ function tweet(req, res) {
     return;
   }
 
-  redisService
-    .getToken(params.sessionToken)
-    .then((session) => {
-      if (!session) {
-        res
-          .status(401)
-          .send(
-            'Token not valid: "' +
-              params.sessionToken +
-              '". Please log in to get a new token.'
-          );
-        return;
-      }
+  let session = await redisService.getToken(params.sessionToken);
 
-      return session;
-    })
-    .then((session) => {
-      let query = "INSERT INTO tweets(author, content) VALUES($1, $2)";
-      let queryParams = [session.id, params.content];
+  if (!session) {
+    res
+      .status(401)
+      .send(
+        'Token not valid: "' +
+          params.sessionToken +
+          '". Please log in to get a new token.'
+      );
+    return;
+  }
 
-      return [db.query(query, queryParams), session];
-    })
-    .then((result) => {
-      let response = {
-        response: "Tweet created successfully!",
-        tweetInfo: {
-          username: result[1].username,
-          content: params.content,
-          date: new Date().toLocaleString(),
-        },
-      };
+  let tweetInfo = await tweetService.tweet(session, params.content);
 
-      res.status(201).send(response);
-    })
-    .catch((e) => {
-      res.status(500).send("Error while creating tweet: " + e);
-    });
+  if (tweetInfo[0] === true) {
+    res.status(200).send(tweetInfo[1]);
+    return;
+  }
+
+  res.status(500).send(tweetInfo[1]);
 }
 
-module.exports = tweet;
+module.exports = {
+  tweet,
+};

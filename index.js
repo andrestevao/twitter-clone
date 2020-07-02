@@ -6,7 +6,7 @@ const routes = require("./routes");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use("/", routes);
+app.use("/api", routes);
 
 app.listen(port, () =>
   console.log(`App listening at http://localhost:${port}`)

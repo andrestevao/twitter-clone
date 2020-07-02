@@ -15,4 +15,12 @@ const newSession = (token, sessionData) => {
   redisClient.expire(token, 60 * 60 * 30);
 };
 
-module.exports = getToken;
+const logoutSession = (token) => {
+  return redisClient.del(token);
+};
+
+module.exports = {
+  getToken,
+  newSession,
+  logoutSession,
+};

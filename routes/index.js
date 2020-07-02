@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt");
 const tweetController = require("../controllers/tweetController");
 const userController = require("../controllers/userController");
 
-router.post("register", (req, res) => {
+router.post("/register", (req, res) => {
   console.log("Received /register");
   let params = {
     username: utils.nullToString(req.body.username),
@@ -53,46 +53,10 @@ router.post("register", (req, res) => {
     });
 });
 
-router.post("login", (req, res) => userController.login(req, res));
+router.post("/login", (req, res) => userController.login(req, res));
 
-router.post("logout", (req, res) => {
-  let params = {
-    sessionToken: utils.nullToString(req.body.sessionToken),
-  };
+router.post("/logout", (req, res) => userController.logout(req, res));
 
-  let missingParams = utils.checkParams(params);
-
-  if (missingParams.length > 0) {
-    res.status(400).send("Parameters missing: " + paramsMissing.join(", "));
-    return;
-  }
-
-  getToken(params.sessionToken)
-    .then((session) => {
-      if (!session) {
-        res.status(401).send("Session does not exists!");
-        return;
-      }
-
-      return redisClient.del(params.sessionToken);
-    })
-    .then((response) => {
-      if (response != 1) {
-        res.status(500).send("Error while logging session out");
-        return;
-      }
-
-      res
-        .status(200)
-        .send("User " + session.username + " logged out succesfully!");
-      return;
-    })
-    .catch((e) => {
-      res.status(500).send("Error while logging session out: " + e);
-      return;
-    });
-});
-
-router.post("tweet", (req, res) => tweetController.tweet(req, res));
+router.post("/tweet", (req, res) => tweetController.tweet(req, res));
 
 module.exports = router;
