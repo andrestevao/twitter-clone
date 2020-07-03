@@ -10,6 +10,24 @@ async function getUser(username) {
     .catch((e) => e);
 }
 
+async function createUser(userInfo) {
+  let query =
+    "INSERT INTO users(id, username, password, name, email, birth) VALUES (nextval('user_id'), $1, $2, $3, $4, $5)";
+  let queryParams = [
+    userInfo.username,
+    userInfo.password,
+    userInfo.name,
+    userInfo.email,
+    userInfo.birth,
+  ];
+
+  return await db
+    .query(query, queryParams)
+    .then((data) => data)
+    .catch((e) => Promise.reject(e));
+}
+
 module.exports = {
   getUser,
+  createUser,
 };

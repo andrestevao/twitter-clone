@@ -1,6 +1,6 @@
 const userModel = require("../models/userModel");
 const uuid = require("node-uuid");
-const redisService = require("../services/redisService");
+const redisService = require("./redisService");
 const bcrypt = require("bcrypt");
 
 async function login(username, password) {
@@ -57,7 +57,26 @@ function logout(token) {
     .catch((e) => [false, e]);
 }
 
+async function register(userInfo) {
+  let saltRounds = 15;
+  let hash = await bcrypt.hashSync(userInfo.password, saltRounds);
+  userInfo.password = hash;
+  return userModel
+    .createUser(userInfo)
+    .then((data) => [true, data])
+    .catch((e) => {
+      switch (e.code) {
+        //code for duplicate value, constraint 'unique_username' on table 'users'
+        case "23505":
+          return [false, "User " + userInfo.username + " already exists!"];
+        default:
+          return [false, e.stack];
+      }
+    });
+}
+
 module.exports = {
   login,
   logout,
+  register,
 };

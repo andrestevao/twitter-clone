@@ -3,9 +3,11 @@ const app = express();
 const bodyParser = require("body-parser");
 const port = 3000;
 const routes = require("./routes");
+const volleyball = require("volleyball");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(volleyball);
 app.use("/api", routes);
 
 app.listen(port, () =>
