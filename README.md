@@ -28,7 +28,9 @@ Any advice is welcome!
 
 ## :heavy_check_mark: Available features :checkered_flag:
 
- - Authentication done with *session based tokens* (using [**redis**](https://redis.io/) for storing the token => session pair)
+ - Simple user registering, for authentication and actions
+ - *Session based* authentication (using [**redis**](https://redis.io/) for storing the token => session info pair)
+ - *Automated Testing* (using [**jest**](https://jestjs.io/)
  - More to come! **See to-do below**
 ## :gear: Installation :computer:
  - Clone the repo with `git clone https://github.com/andrestevao/twitter-clone`
@@ -44,8 +46,22 @@ Most usage is through post requests to the api. Please see `/routes/index.js` to
 
 ## :scroll: To-do :fountain_pen:
 
+*(Maybe not exactly on this order. I'll keep updating this as i'm progressing through the development, marking what i've currently done and maybe adding some stuff as time goes on)*
+
  - [ ] Listen in HTTPS, so i can deploy this safely later
  - [ ] Implement testing
+	- [X] Create folder for tests (`tests`)
+	- [X] Create package.json script for tests (`npm run test`)
+	- [ ] Review code and create unit tests until 100% coverage
+		- [X] `utils`
+		- [ ] `config`
+		- [ ] `controllers`
+		- [ ] `db`
+		- [ ] `models`
+		- [ ] `services`
+	- [ ] Start doing TDD
+	- [ ] Figure out and create some good integration tests
+	- [ ] Figure out and create some good end-to-end interaction tests
  - [ ] Figure out the best way to use promises/async-await syntax (in the code i'm mixing them all up, not sure if that is a good thing to do)
  - [ ] Make the code uniform in general
  - [ ] Read Roy Fielding's REST paper and use proper REST methods and codes (i'm only using Post and general codes like 500, 401, 200)

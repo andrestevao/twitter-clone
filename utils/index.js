@@ -1,4 +1,8 @@
 const checkParams = (params) => {
+  if (Object.prototype.toString.call(params) != "[object Object]") {
+    return null;
+  }
+
   let paramsMissing = [];
   let paramsArray = Object.entries(params);
 
@@ -12,11 +16,15 @@ const checkParams = (params) => {
 };
 
 const nullToString = (value) => {
-  if (value == null || typeof value != "string") {
-    return "";
-  } else {
+  if (typeof value == "string") {
     return value.trim();
   }
+
+  if (value !== null) {
+    return value;
+  }
+
+  return "";
 };
 
 module.exports = {
