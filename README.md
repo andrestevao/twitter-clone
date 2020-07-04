@@ -55,9 +55,10 @@ Most usage is through post requests to the api. Please see `/routes/index.js` to
 	- [ ] Review code and create unit tests until 100% coverage
 		- [X] `utils`
 		- [ ] `controllers`
-		- [ ] `db`
+		- [X] `db`
 		- [ ] `models`
 		- [ ] `services`
+	- [ ] Figure out a way to dinamically display badge with current status/coverage (maybe with github actions?)
 	- [ ] Start doing TDD
 	- [ ] Figure out and create some good integration tests
 	- [ ] Figure out and create some good end-to-end interaction tests
