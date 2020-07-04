@@ -27,5 +27,15 @@ jobs:
       run: npm install
 
     # Runs a set of commands using the runners shell
-    - name: Run jest tests
+    - name: Run jest tests with repo secrets as expected (.env) environment variables
+      env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_LINK: ${{ secrets.DB_LINK }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_SCHEMA: ${{ secrets.DB_SCHEMA }}
+          DB_USER: ${{ secrets.DB_USER }}
+          REDIS_IP: ${{ secrets.REDIS_IP }}
+          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+          REDIS_PORT: ${{ secrets.REDIS_PORT }}
       run: npm test
