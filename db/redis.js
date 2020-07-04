@@ -8,18 +8,19 @@ const client = redis.createClient({
   password: process.env.REDIS_PASSWORD,
 });
 
-client.on("connect", () => {
-  console.log("[Redis] Client connected!");
-});
+// client.on("connect", () => {
+//   console.log("[Redis] Client connected!");
+// });
 
-client.on("error", (err) => {
-  console.log("[Redis] Something went wrong: " + err);
-});
+// client.on("error", (err) => {
+//   console.log("[Redis] Something went wrong: " + err);
+// });
 
 module.exports = {
   get: promisify(client.get).bind(client),
   del: promisify(client.del).bind(client),
-  del: promisify(client.del).bind(client),
   set: promisify(client.set).bind(client),
   expire: promisify(client.expire).bind(client),
+  quit: promisify(client.quit).bind(client),
+  ttl: promisify(client.ttl).bind(client),
 };

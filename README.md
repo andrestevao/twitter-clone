@@ -54,7 +54,6 @@ Most usage is through post requests to the api. Please see `/routes/index.js` to
 	- [X] Create package.json script for tests (`npm run test`)
 	- [ ] Review code and create unit tests until 100% coverage
 		- [X] `utils`
-		- [ ] `config`
 		- [ ] `controllers`
 		- [ ] `db`
 		- [ ] `models`
