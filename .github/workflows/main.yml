@@ -44,4 +44,4 @@ jobs:
     - name: Send reports to codecov 
       env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-      run: codecov --token=CODECOV_TOKEN 
+      run: npm run codecov --token=CODECOV_TOKEN 
