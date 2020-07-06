@@ -39,3 +39,9 @@ jobs:
           REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
           REDIS_PORT: ${{ secrets.REDIS_PORT }}
       run: npm test
+
+    # Send reports to codecov 
+    - name: Send reports to codecov 
+      env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      run: ./node_modules/.bin/codecov/ --token=CODECOV_TOKEN 
