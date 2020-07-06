@@ -15,7 +15,7 @@
     "new_migrate": "node-pg-migrate -d DB_LINK create",
     "prettier": "prettier --write '**/*.js'",
     "test": "jest --coverage --collectCoverageFrom='./{config,controllers,db,models,services,utils}/**/*.js' --detectOpenHandles --unhandled-rejections=strict",
-    "codecov": "codecov --token=CODECOV_TOKEN" 
+    "codecov": "codecov" 
   },
   "repository": {
     "type": "git",
