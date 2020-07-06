@@ -62,14 +62,13 @@ function register(req, res) {
   }
 
   authService.register(params).then((data) => {
-    if(data[0] === false){
+    if (data[0] === false) {
       res.status(401).send(data[1]);
       return;
     }
 
-    res.status(200).send("User "+params.username+" created successfully!");
+    res.status(200).send("User " + params.username + " created successfully!");
   });
-  
 }
 
 module.exports = {
