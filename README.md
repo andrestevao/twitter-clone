@@ -1,7 +1,7 @@
 # :eye_speech_bubble: Twitter clone :speech_balloon:
 A self-hosted twitter-like app (implementing most twitter features - the best way i can :D)
 
-![CI](https://github.com/andrestevao/twitter-clone/workflows/CI/badge.svg) [![codecov](https://codecov.io/gh/andrestevao/twitter-clone/branch/master/graph/badge.svg)](https://codecov.io/gh/andrestevao/twitter-clone)
+![CI: build & tests](https://github.com/andrestevao/twitter-clone/workflows/CI:%20build%20&%20tests/badge.svg) [![codecov](https://codecov.io/gh/andrestevao/twitter-clone/branch/master/graph/badge.svg)](https://codecov.io/gh/andrestevao/twitter-clone)
 ## :blue_book: Motivation :open_book:
 I'm developing this as a side project mainly to serve as a *learning experience* developing a full stack app with JavaScript using modern JS techniques and libraries (mainly express related, but i also used some to do other stuff, like [**uuid**](https://github.com/uuidjs/uuid) to generate random session tokens), and to showcase it on my future portfolio (that i didn't build yet!) using a live deploy somewhere in the future. I'll try applying most of what i learned in my short web development career, so i can exercise my javascript skills. This also means that i'll using a lot of unecessary things for a project of this small scale (like **redis** for caching session tokens) but i think over-engineering projects is a cool way to learn and apply new concepts that you are still learning. 
 
