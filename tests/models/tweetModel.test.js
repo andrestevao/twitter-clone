@@ -19,6 +19,13 @@ test("should create tweet properly", async () => {
   });
 });
 
+test("should return error", () => {
+    return  createTweet = tweetModel.createTweet(-1, null)
+    .catch(result => {
+      expect(result).toBe(false);
+    });
+});
+
 afterAll(async () => {
   await db.query("DELETE FROM tweets WHERE author=-1", []);
   await db.end();
