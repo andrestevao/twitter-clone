@@ -20,10 +20,9 @@ test("should create tweet properly", async () => {
 });
 
 test("should return error", () => {
-    return  createTweet = tweetModel.createTweet(-1, null)
-    .catch(result => {
-      expect(result).toBe(false);
-    });
+  return (createTweet = tweetModel.createTweet(-1, null).catch((result) => {
+    expect(result).toBe(false);
+  }));
 });
 
 afterAll(async () => {

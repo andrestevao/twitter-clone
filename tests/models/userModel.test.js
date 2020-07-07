@@ -10,6 +10,14 @@ userInfo = {
   email: chance.email(),
   birth: chance.birthday({ string: true }).replace(/\//g, "-"),
 };
+
+messedUpUserInfo = {
+  username: null, //null username
+  password: chance.string(),
+  name: chance.name(),
+  email: chance.email(),
+  birth: chance.birthday({ string: true }).replace(/\//g, "-"),
+};
 test("should create user properly", async () => {
   await userModel.createUser(userInfo).then((result) => {
     expect(result.rowCount).toBe(1);
@@ -30,6 +38,12 @@ test("should create user properly", async () => {
     });
 });
 
+test("should fail creating user", () => {
+    result = userModel.createUser(messedUpUserInfo).catch(error => {
+        expect(error).toEqual(Error('null value in column "username" violates not-null constraint'));
+    });
+});
+
 test("should get user create before properly", () => {
   return userModel.getUser(userInfo.username).then((result) => {
     expect(result).toEqual(
@@ -39,6 +53,12 @@ test("should get user create before properly", () => {
         email: userInfo.email,
       })
     );
+  });
+});
+
+test("should fail getting user", () => {
+  return userModel.getUser(chance.string({ length: 15 })).catch((result) => {
+    expect(result).toEqual(false);
   });
 });
 
