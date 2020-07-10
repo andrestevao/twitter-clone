@@ -28,8 +28,9 @@ const newSession = async (token, sessionData) => {
 };
 
 const logoutSession = async (token) => {
-  let didDelete = await redis.del(token);
-  redis.quit();
+  let client = redis.newClient();
+  let didDelete = await client.del(token);
+  client.quit();
   return didDelete;
 };
 

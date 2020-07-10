@@ -29,3 +29,8 @@ test("should get token created earlier", () => {
 });
 
 //logoutSession(session)
+test("should delete created earlier", () => {
+  return redisService.logoutSession(randomToken).then((result) => {
+    expect(result).toBe(1);
+  });
+});
