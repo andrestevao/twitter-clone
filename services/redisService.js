@@ -1,22 +1,36 @@
-const redisClient = require("../db/redis");
+const redis = require("../db/redis");
 
-const getToken = (token) => {
-  return redisClient.get(token).then((data) => {
+const getToken = async (token) => {
+  let client = redis.newClient();
+  let session = await client.get(token).then((data) => {
     let session = JSON.parse(data);
     if (!session) {
       return false;
     }
     return session;
   });
+
+  client.quit();
+  return session;
 };
 
-const newSession = (token, sessionData) => {
-  redisClient.set(token, JSON.stringify(sessionData));
-  redisClient.expire(token, 60 * 60 * 30);
+const newSession = async (token, sessionData) => {
+  client = redis.newClient();
+  return client
+    .set(token, JSON.stringify(sessionData))
+    .then((result) => {
+      return client.expire(token, 60 * 60 * 30);
+    })
+    .then((result) => {
+      client.quit();
+      return result;
+    });
 };
 
-const logoutSession = (token) => {
-  return redisClient.del(token);
+const logoutSession = async (token) => {
+  let didDelete = await redis.del(token);
+  redis.quit();
+  return didDelete;
 };
 
 module.exports = {

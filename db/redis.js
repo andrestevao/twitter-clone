@@ -2,25 +2,23 @@ require("dotenv").config();
 const { promisify } = require("util");
 
 const redis = require("redis");
-const client = redis.createClient({
-  host: process.env.REDIS_IP,
-  port: process.env.REDIS_PORT,
-  password: process.env.REDIS_PASSWORD,
-});
+function newClient() {
+  let newClient = redis.createClient({
+    host: process.env.REDIS_IP,
+    port: process.env.REDIS_PORT,
+    password: process.env.REDIS_PASSWORD,
+  });
 
-// client.on("connect", () => {
-//   console.log("[Redis] Client connected!");
-// });
+  newClient.get = promisify(newClient.get).bind(newClient);
+  newClient.set = promisify(newClient.set).bind(newClient);
+  newClient.del = promisify(newClient.del).bind(newClient);
+  newClient.ttl = promisify(newClient.ttl).bind(newClient);
+  newClient.expire = promisify(newClient.expire).bind(newClient);
+  newClient.quit = promisify(newClient.quit).bind(newClient);
 
-// client.on("error", (err) => {
-//   console.log("[Redis] Something went wrong: " + err);
-// });
+  return newClient;
+}
 
 module.exports = {
-  get: promisify(client.get).bind(client),
-  del: promisify(client.del).bind(client),
-  set: promisify(client.set).bind(client),
-  expire: promisify(client.expire).bind(client),
-  quit: promisify(client.quit).bind(client),
-  ttl: promisify(client.ttl).bind(client),
+  newClient: newClient,
 };

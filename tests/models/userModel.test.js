@@ -39,9 +39,11 @@ test("should create user properly", async () => {
 });
 
 test("should fail creating user", () => {
-    result = userModel.createUser(messedUpUserInfo).catch(error => {
-        expect(error).toEqual(Error('null value in column "username" violates not-null constraint'));
-    });
+  result = userModel.createUser(messedUpUserInfo).catch((error) => {
+    expect(error).toEqual(
+      Error('null value in column "username" violates not-null constraint')
+    );
+  });
 });
 
 test("should get user create before properly", () => {
