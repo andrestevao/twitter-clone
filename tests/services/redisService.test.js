@@ -28,6 +28,12 @@ test("should get token created earlier", () => {
   });
 });
 
+test("should fail to get token (doesnt exist)", () => {
+  return redisService.getToken(chance.guid()).then((result) => {
+    expect(result).toBe(false);
+  });
+});
+
 //logoutSession(session)
 test("should delete created earlier", () => {
   return redisService.logoutSession(randomToken).then((result) => {
