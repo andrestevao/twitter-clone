@@ -61,7 +61,7 @@ async function register(userInfo) {
   let saltRounds = 15;
   let hash = await bcrypt.hashSync(userInfo.password, saltRounds);
   userInfo.password = hash;
-  return userModel
+  return await userModel
     .createUser(userInfo)
     .then((data) => [true, data])
     .catch((e) => {
