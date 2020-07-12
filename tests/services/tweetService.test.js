@@ -16,17 +16,14 @@ let content = "TEST_" + chance.string();
 
 test("should tweet properly", () => {
   return tweetService.tweet(testSession, content).then((result) => {
-    expect(result).toEqual([
-      true,
+    expect(result[0]).toEqual(true);
+    expect(result[1].response).toEqual("Tweet created successfully!");
+    expect(result[1].tweetInfo).toEqual(
       expect.objectContaining({
-        response: "Tweet created successfully!",
-        tweetInfo: {
-          username: testSession.username,
-          content: content,
-          date: testSession.sessionStart,
-        },
-      }),
-    ]);
+        username: testSession.username,
+        content: content,
+      })
+    );
   });
 });
 
