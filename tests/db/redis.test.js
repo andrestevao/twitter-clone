@@ -28,5 +28,5 @@ test("should delete key (created before) properly", async () => {
 });
 
 afterAll(() => {
-    client.quit();
+  client.quit();
 });
