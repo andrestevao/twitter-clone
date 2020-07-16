@@ -5,9 +5,9 @@ const bcrypt = require("bcrypt");
 
 async function login(username, password) {
   let user = await userModel.getUser(username).then((user) => {
-      if (user === false) {
-        return false;
-      }
+    if (user === false) {
+      return false;
+    }
 
     if (!bcrypt.compareSync(password, user.password)) {
       return false;
@@ -15,7 +15,6 @@ async function login(username, password) {
 
     return user;
   });
-
 
   let end = new Date();
   end.setDate(end.getDate() + 30);
@@ -63,7 +62,7 @@ async function register(userInfo) {
   let hash = await bcrypt.hashSync(userInfo.password, saltRounds);
   let userInfoClone = Object.create(userInfo);
   userInfoClone.password = hash;
-    result = userModel
+  result = userModel
     .createUser(userInfoClone)
     .then((data) => [true, data])
     .catch((e) => {
@@ -76,7 +75,7 @@ async function register(userInfo) {
       }
     });
 
-    return result;
+  return result;
 }
 
 module.exports = {
