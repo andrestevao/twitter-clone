@@ -15,7 +15,7 @@
     "new_migrate": "node-pg-migrate -d DB_LINK create",
     "prettier": "prettier --write '**/*.js'",
     "test": "jest --coverage --collectCoverageFrom='./{config,controllers,db,models,services,utils}/**/*.js' --detectOpenHandles --unhandled-rejections=strict --runInBand --verbose --forceExit",
-    "codecov": "codecov" 
+    "codecov": "codecov"
   },
   "repository": {
     "type": "git",
@@ -33,23 +33,23 @@
     "chance": "^1.1.6",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "node-pg-migrate": "^5.2.0",
+    "node-pg-migrate": "^5.3.0",
     "node-postgres": "^0.6.2",
     "node-uuid": "^1.4.8",
-    "pg": "^8.2.1",
+    "pg": "^8.3.0",
     "redis": "^3.0.2",
     "volleyball": "^1.5.1"
   },
   "devDependencies": {
     "codecov": "^3.7.0",
-    "eslint": "^7.3.1",
+    "eslint": "^7.4.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.3",
-    "eslint-plugin-react-hooks": "^4.0.5",
+    "eslint-plugin-react-hooks": "^4.0.8",
     "jest": "^26.1.0",
     "prettier": "2.0.5"
   }
