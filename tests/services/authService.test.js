@@ -15,6 +15,8 @@ let sampleUserInfo = {
 
 //register(userInfo) -> login -> logout
 test("should register sample user properly and use its info to authorize and provide a random token, then, logout with the token provided", async () => {
+  //longer time since this is more of an integration test than an unit test
+  jest.setTimeout(15000);
   //REGISTER
   let registerUser = await authService.register(sampleUserInfo);
   expect(registerUser[0]).toEqual(true);
