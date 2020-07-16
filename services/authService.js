@@ -5,6 +5,10 @@ const bcrypt = require("bcrypt");
 
 async function login(username, password) {
   let user = await userModel.getUser(username).then((user) => {
+      if (user === false) {
+        return false;
+      }
+
     if (!bcrypt.compareSync(password, user.password)) {
       return false;
     }
@@ -12,9 +16,6 @@ async function login(username, password) {
     return user;
   });
 
-  if (user === false) {
-    return false;
-  }
 
   let end = new Date();
   end.setDate(end.getDate() + 30);
@@ -27,7 +28,7 @@ async function login(username, password) {
     sessionEnd: end.toLocaleString(),
   };
 
-  redisService.newSession(randomToken, session);
+  await redisService.newSession(randomToken, session);
 
   let dataResponse = {
     ok: true,
@@ -60,9 +61,10 @@ function logout(token) {
 async function register(userInfo) {
   let saltRounds = 15;
   let hash = await bcrypt.hashSync(userInfo.password, saltRounds);
-  userInfo.password = hash;
-  return await userModel
-    .createUser(userInfo)
+  let userInfoClone = Object.create(userInfo);
+  userInfoClone.password = hash;
+    result = userModel
+    .createUser(userInfoClone)
     .then((data) => [true, data])
     .catch((e) => {
       switch (e.code) {
@@ -73,6 +75,8 @@ async function register(userInfo) {
           return [false, e.stack];
       }
     });
+
+    return result;
 }
 
 module.exports = {
