@@ -69,7 +69,6 @@ async function register(userInfo) {
     .createUser(userInfoClone)
     .then((data) => [true, data])
     .catch((e) => {
-      console.log(e.code);
       switch (e.code) {
         //code for duplicate value, constraint 'unique_username' on table 'users'
         case "23505":
