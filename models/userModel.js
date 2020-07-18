@@ -3,7 +3,11 @@ const db = require("../db");
 async function getUser(username) {
   let query = "select * from users where username = $1";
   return await db.query(query, [username]).then((data) => {
-    return data.rows[0];
+    if (data.rows[0]) {
+      return data.rows[0];
+    }
+
+    return false;
   });
 }
 
@@ -27,10 +31,9 @@ function createUser(userInfo) {
 async function deleteUser(username) {
   let query = "DELETE FROM users WHERE username = $1";
 
-  return await db
-    .query(query, [username])
-    .then((data) => data)
-    .catch((e) => Promise.reject(e));
+  let result = await db.query(query, [username]);
+
+  return result;
 }
 
 module.exports = {

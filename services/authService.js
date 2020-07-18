@@ -4,17 +4,15 @@ const redisService = require("./redisService");
 const bcrypt = require("bcrypt");
 
 async function login(username, password) {
-  let user = await userModel.getUser(username).then((user) => {
-    if (user === false) {
-      return false;
-    }
+  let user = await userModel.getUser(username).then((user) => user);
 
-    if (!bcrypt.compareSync(password, user.password)) {
-      return false;
-    }
+  if (!user) {
+    return false;
+  }
 
-    return user;
-  });
+  if (!bcrypt.compareSync(password, user.password)) {
+    return false;
+  }
 
   let end = new Date();
   end.setDate(end.getDate() + 30);
@@ -38,26 +36,31 @@ async function login(username, password) {
   return dataResponse;
 }
 
-function logout(token) {
-  return redisService
-    .getToken(token)
-    .then((session) => {
-      if (!session) {
-        return Promise.reject(["Session doesn't exists"]);
-      }
-      return session;
-    })
-    .then(async (session) => {
-      let user = session.username;
-      let data = await redisService.logoutSession(token);
-      if (data > 0) {
-        return [true, user];
-      }
-    })
-    .catch((e) => [false, e]);
+async function logout(token) {
+  let session = await redisService.getToken(token);
+  if (!session) {
+    return [false, "Session does not exists."];
+  }
+
+  await redisService.logoutSession(token);
+
+  return [true, session.username];
 }
 
 async function register(userInfo) {
+  let expectedParameters = ["username", "password", "name", "email", "birth"];
+  let missing = [];
+
+  expectedParameters.forEach((parameter) => {
+    if (!userInfo.hasOwnProperty(parameter)) {
+      missing.push(parameter);
+    }
+  });
+
+  if (missing.length > 0) {
+    return [false, "Missing parameters: " + missing.join(", ")];
+  }
+
   let saltRounds = 15;
   let hash = await bcrypt.hashSync(userInfo.password, saltRounds);
   let userInfoClone = Object.create(userInfo);
@@ -66,12 +69,11 @@ async function register(userInfo) {
     .createUser(userInfoClone)
     .then((data) => [true, data])
     .catch((e) => {
+      console.log(e.code);
       switch (e.code) {
         //code for duplicate value, constraint 'unique_username' on table 'users'
         case "23505":
           return [false, "User " + userInfo.username + " already exists!"];
-        default:
-          return [false, e.stack];
       }
     });
 

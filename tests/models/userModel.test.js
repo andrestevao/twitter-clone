@@ -59,11 +59,16 @@ test("should get user create before properly", () => {
 });
 
 test("should fail getting user", () => {
-  return userModel.getUser(chance.string({ length: 15 })).catch((result) => {
+  return userModel.getUser(chance.string({ length: 15 })).then((result) => {
     expect(result).toEqual(false);
   });
 });
 
+test("should fail deleting user", () => {
+  return userModel.getUser({ fakeInfo: chance.string() }).then((result) => {
+    expect(result).toEqual(false);
+  });
+});
 afterAll(async () => {
   await db.query("DELETE FROM users WHERE username=$1", [userInfo.username]);
   await db.end();
