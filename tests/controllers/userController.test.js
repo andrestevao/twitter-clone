@@ -30,6 +30,8 @@ let paramsSampleUser = {
 };
 
 test("should properly return register status, log in with registered user and logout after", async () => {
+    //changed timeout since this is a big test
+    jest.setTimeout(15000);
     await request(app)
         .post('/api/register')
         .send(paramsSampleUser)
