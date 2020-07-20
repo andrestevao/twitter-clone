@@ -7,8 +7,8 @@ async function login(req, res) {
     password: utils.nullToString(req.body.password),
   };
 
-  let missingParams = utils.checkParams(params);
-  if (missingParams.length > 0) {
+  let paramsMissing = utils.checkParams(params);
+  if (paramsMissing.length > 0) {
     res.status(400).send("Parameters missing: " + paramsMissing.join(", "));
     return;
   }
@@ -31,7 +31,7 @@ function logout(req, res) {
   let missingParams = utils.checkParams(params);
 
   if (missingParams.length > 0) {
-    res.status(400).send("Parameters missing: " + paramsMissing.join(", "));
+    res.status(400).send("Parameters missing: " + missingParams.join(", "));
     return;
   }
 
@@ -54,6 +54,7 @@ function register(req, res) {
     birth: utils.nullToString(req.body.birth),
   };
 
+
   let paramsMissing = utils.checkParams(params);
 
   if (paramsMissing.length > 0) {
@@ -61,13 +62,13 @@ function register(req, res) {
     return;
   }
 
-  authService.register(params).then((data) => {
+  result = authService.register(params).then((data) => {
     if (data[0] === false) {
       res.status(401).send(data[1]);
       return;
     }
 
-    res.status(200).send("User " + params.username + " created successfully!");
+    res.status(201).send("User " + params.username + " created successfully!");
   });
 }
 

@@ -24,6 +24,10 @@ const nullToString = (value) => {
     return value.trim();
   }
 
+  if (typeof value == "undefined") {
+      return "";
+  }
+
   if (value !== null) {
     return value;
   }

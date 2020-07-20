@@ -35,7 +35,6 @@ async function tweet(req, res) {
     return;
   }
 
-  res.status(500).send(tweetInfo[1]);
 }
 
 module.exports = {

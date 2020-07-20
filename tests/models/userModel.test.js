@@ -20,7 +20,8 @@ messedUpUserInfo = {
 };
 test("should create user properly", async () => {
   await userModel.createUser(userInfo).then((result) => {
-    expect(result.rowCount).toBe(1);
+    expect(result[0]).toBe(true);
+    expect(result[1].rowCount).toBe(1);
   });
 
   return db

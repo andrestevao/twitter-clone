@@ -24,8 +24,8 @@ function createUser(userInfo) {
 
   return db
     .query(query, queryParams)
-    .then((data) => data)
-    .catch((e) => Promise.reject(e));
+    .then((data) => [true, data])
+    .catch((e) => [false, e]);
 }
 
 async function deleteUser(username) {
