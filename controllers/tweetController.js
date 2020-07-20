@@ -11,7 +11,7 @@ async function tweet(req, res) {
   let missingParams = utils.checkParams(params);
 
   if (missingParams.length > 0) {
-    res.status(400).send("Parameters missing: " + paramsMissing.join(", "));
+    res.status(400).send("Parameters missing: " + missingParams.join(", "));
     return;
   }
 

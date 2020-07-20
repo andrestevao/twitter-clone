@@ -6,6 +6,10 @@ const checkParams = (params) => {
   let paramsMissing = [];
   let paramsArray = Object.entries(params);
 
+  if (paramsArray.length == 0){
+      return null;
+  }
+
   paramsArray.map((param) => {
     if (param[1].length == 0) {
       paramsMissing.push(param[0]);

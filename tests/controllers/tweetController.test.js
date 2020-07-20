@@ -65,6 +65,37 @@ test("should properly return that the tweet was created", () => {
         });
 });
 
+test("should properly return that there are missing parameters", () => {
+    let sendData = {
+        sessionToken: null,
+        content: null
+    };
+
+    return request(app)
+        .post('/api/tweet')
+        .send(sendData)
+        .then(response => {
+            expect(response.statusCode).toBe(400);
+            expect(response.text).toBe("Parameters missing: sessionToken, content");
+        });
+});
+
+test("should properly return that token is not valid", () => {
+
+    let sendData = {
+        sessionToken: chance.string(),
+        content: chance.string()
+    };
+
+    return request(app)
+        .post('/api/tweet')
+        .send(sendData)
+        .then(response => {
+            expect(response.statusCode).toBe(401);
+            expect(response.text).toBe('Token not valid: "'+sendData.sessionToken+'". Please log in to get a new token.');
+        });
+});
+
 //delete the user and the session created in beforeAll() above
 afterAll(async () => {
 
