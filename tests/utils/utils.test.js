@@ -33,3 +33,7 @@ test("should return null if input is not an object", () => {
   expect(utils.checkParams(true)).toBeNull();
   expect(utils.checkParams(null)).toBeNull();
 });
+
+test("should return null if empty object", () => {
+  expect(utils.checkParams({})).toBeNull();
+});
